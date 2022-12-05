@@ -53,11 +53,14 @@ function appendDieRollToBody() {
 	warning.style.color = 'red';
     printedDieResults.appendChild(warning);
   } else {
-    const dieResult = getRandomInt(minDieValue, maxDieValue);
-    const newDieResult = document.createElement('p');
-    newDieResult.textContent = '(' + minDieValue + ', ' + maxDieValue + ') = ' + dieResult;
-    printedDieResults.appendChild(newDieResult);
-    updateDieStats(dieResult);
+	const rollCount = parseInt(document.getElementById('die_roll_count').value);
+	for (let count = 0; count < rollCount; count++) {
+      const dieResult = getRandomInt(minDieValue, maxDieValue);
+      const newDieResult = document.createElement('p');
+      newDieResult.textContent = '(' + minDieValue + ', ' + maxDieValue + ') = ' + dieResult;
+      printedDieResults.appendChild(newDieResult);
+      updateDieStats(dieResult);
+	}
   }
 }
 
