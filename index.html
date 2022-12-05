@@ -1,10 +1,20 @@
 <!DOCTYPE html>
 <html>
-<title>And a wandering we go...</title>
+<title>Dice Simulator</title>
 <script src="js/dice_functions.js" defer></script>
 <body>
-  <h1>Hello World</h1>
-  <p><button id="console_button">Click for Hello World (in console)</button></p>
-  <p><button id="paragraph_button">Click for Hello World (as paragraph)</button></p>
+  <h1>Dice Simulator</h1>
+  <p>
+	Minimum die value: <input id="min_die_value" value=1></input>
+  </p>
+  <p>
+	Maximum die value: <input id="max_die_value" value=6></input>
+  </p>
+  <p>
+	<button id="die_roll_button">Click to get a die result below (using the maximum die value from above)</button>
+	<button id="clear_printed_results">Click to clear the printed results</button>
+  </p>
+  <p id="die_stats"></p>
+  <p id="printed_die_results"></p>
 </body>
 </html>
