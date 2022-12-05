@@ -1,5 +1,5 @@
 
-function helloWorld() {
+function consolePrint() {
   console.log("Hello World (via js)!");
 }
 
@@ -10,14 +10,14 @@ function createParagraph() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  const hello_world_buttons = document.querySelectorAll('hello_world_button');
-  const paragraph_buttons = document.querySelectorAll('button');
+  const console_buttons = document.querySelectorAll('console_button');
+  const paragraph_buttons = document.querySelectorAll('paragraph_button');
 
-  for (const button of hello_world_buttons) {
-    button.addEventListener('click', helloWorld);
+  for (const console_button of console_buttons) {
+    console_button.addEventListener('click', consolePrint);
   }
 
-  for (const button of paragraph_buttons) {
-    button.addEventListener('click', createParagraph);
+  for (const paragraph_button of paragraph_buttons) {
+    paragraph_button.addEventListener('click', createParagraph);
   }
 });  
