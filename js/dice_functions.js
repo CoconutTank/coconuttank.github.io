@@ -1,11 +1,11 @@
 
 function consolePrint() {
-  console.log("Hello World (via js)!");
+  console.log("Hello World (in console)!");
 }
 
 function createParagraph() {
   const para = document.createElement('p');
-  para.textContent = 'You clicked a button!';
+  para.textContent = Hello World (as paragraph)!';
   document.body.appendChild(para);
 }
 
