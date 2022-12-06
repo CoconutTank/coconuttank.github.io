@@ -159,6 +159,7 @@ function clearPrintedDieResults() {
 }
 
 // Rolls all the die in the die pool and displays the results.
+// This function is used with the "Roll!" button.
 function rollDiePoolAndDisplayResults() {
   const printedDieResults = document.getElementById('printed_die_results');
   var printedDieResultsText = printedDieResults.textContent;
@@ -179,11 +180,23 @@ function rollDiePoolAndDisplayResults() {
   printedDieResults.textContent = (printedDieResultsText + newPrintedResults);
 }
 
+// Enables (or disables) the "Load Die Pool" button, depending on whether or not it has any input.
+// This function is used with the "Die Pool Input" input field.
+function toggleLoadDiePoolButton() {
+  const diePoolInputValue = document.getElementById('die_pool_input').value;
+  if (diePoolInputValue != "") {
+	document.getElementById('load_die_pool_button').removeAttribute('disabled');
+  } else {
+	document.getElementById('load_die_pool_button').setAttribute('disabled', true);
+  }
+}
+
 // Adds functions to the buttons.
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add_die_button').addEventListener('click', addDieToDiePool);
   document.getElementById('roll_die_pool_button').addEventListener('click', rollDiePoolAndDisplayResults);
   document.getElementById('clear_die_pool_button').addEventListener('click', clearDiePool);
+  document.getElementById('die_pool_input').addEventListener('keyup', toggleLoadDiePoolButton);
   document.getElementById('load_die_pool_button').addEventListener('click', loadDiePool);
   document.getElementById('clear_printed_results').addEventListener('click', clearPrintedDieResults);
 });
