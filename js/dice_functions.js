@@ -138,15 +138,15 @@ function updateDieStats(newDieValue) {
   const lowestValueLine = document.createElement('div');
   const highestValueLine = document.createElement('div');
   const totalSumLine = document.createElement('div');
-  lowestValueLine.textContent = 'lowest value = ' + lowestDieResult;
-  highestValueLine.textContent = 'highest value = ' + highestDieResult;
-  totalSumLine.textContent = 'total die sum = ' + dieSum;
+  lowestValueLine.textContent = 'Lowest rolled value = ' + lowestDieResult;
+  highestValueLine.textContent = 'Highest rolled value = ' + highestDieResult;
+  totalSumLine.textContent = 'Total die sum = ' + dieSum;
   dieStats.appendChild(lowestValueLine);
   dieStats.appendChild(highestValueLine);
   dieStats.appendChild(totalSumLine);
   if (lowestDieResult != highestDieResult) {
     const diffLine = document.createElement('div');
-	diffLine.textContent = 'difference between highest and lowest die rolls = ' + Math.abs(highestDieResult - lowestDieResult);
+	diffLine.textContent = 'Difference between highest and lowest die rolls = ' + Math.abs(highestDieResult - lowestDieResult);
 	dieStats.appendChild(diffLine);
   }
   document.getElementById('clear_printed_results').disabled = false;
