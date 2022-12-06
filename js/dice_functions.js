@@ -1,7 +1,15 @@
 
-// Theoretical limits. For some reason Math.MAX_SAFE_INTEGER and Math.MIN_SAFE_INTEGER become undefined and don't behave properly.
-var lowestDieResult = 9999;
-var highestDieResult = -9999;
+// Global constants. For some reason Math.MAX_SAFE_INTEGER and Math.MIN_SAFE_INTEGER become undefined and don't behave properly.
+const INITIAL_LOWEST_DIE_VALUE = 9999;
+const INITIAL_HIGHEST_DIE_VALUE = -9999;
+const DIE_PARAM_SPLIT = ',';
+const DIE_POOL_SPLIT = ';';
+const INDIVIDUAL_ROLL_SPLIT = ' / ';
+const GROUP_ROLL_SPLIT = ' ~ ';
+
+// Global variables.
+var lowestDieResult = INITIAL_LOWEST_DIE_VALUE;
+var highestDieResult = INITIAL_HIGHEST_DIE_VALUE;
 var dieSum = 0;
 var diePool = [];
 
@@ -9,9 +17,17 @@ var diePool = [];
 function areValidDieParams(min, max, showAlerts) {
   var valid = true;
   var alertMsgs = [];
+  if (Number.isNaN(min)) {
+	valid = false;
+	alertMsgs.push('***ERROR***: given minimum die value is NaN.');
+  }
+  if (Number.isNaN(max)) {
+	valid = false;
+	alertMsgs.push('***ERROR***: given maximum die value is NaN.');
+  }
   if (min < 1) {
 	valid = false;
-	alertMsgs.push('***ERROR***: invalid die parameters with minimum die value (' + min + ') being less than 1.');
+	alertMsgs.push('***ERROR***: invalid die parameters with minimum die value (' + min + ') less than 1.');
   }
   if (min >= max) {
 	valid = false;
@@ -49,9 +65,9 @@ function addDieToDiePoolInner(min, max) {
   var diePoolObject = document.getElementById('die_pool');
   var diePoolText = diePoolObject.textContent;
   if (diePool.length >= 2) {
-	  diePoolText += ';';
+	  diePoolText += DIE_POOL_SPLIT;
   }
-  diePoolText += (min + ',' + max);
+  diePoolText += (min + DIE_PARAM_SPLIT + max);
   diePoolObject.textContent = diePoolText;
   document.getElementById('roll_die_pool_button').disabled = false;
   document.getElementById('clear_die_pool_button').disabled = false;
@@ -75,29 +91,34 @@ function addDieToDiePool() {
 // The string that shows up for the die pool when adding die to the die pool should be a valid input.
 // This function is used with the "Load Die Pool" button.
 function loadDiePool() {
-  clearDiePool();
   diePoolInput = document.getElementById('die_pool_input').value;
-  console.log('diePoolInput = ' + diePoolInput);
-  const diePoolInputSplit = diePoolInput.split(';');
-  console.log('diePoolInputSplit = ' + diePoolInputSplit);
-  for (const dieParams of diePoolInputSplit) {
-	die = dieParams.split(',');
-    console.log('die = ' + die);
-	min = parseInt(die[0]);
-	max = parseInt(die[1]);
-	if (areValidDieParams(min, max, true)) {
-	  addDieToDiePoolInner(min, max);
-	}
+  if (diePoolInput.length > 0) {
+    clearDiePool();
+    const diePoolInputSplit = diePoolInput.split(DIE_POOL_SPLIT);
+    for (const dieParams of diePoolInputSplit) {
+	  die = dieParams.split(DIE_PARAM_SPLIT);
+	  if (die.length == 2) {
+	    min = parseInt(die[0]);
+	    max = parseInt(die[1]);
+	    if (areValidDieParams(min, max, true)) {
+	      addDieToDiePoolInner(min, max);
+	    }
+	  } else {
+		alert('***ERROR***: Malformed die pair detected. Given die pair = ' + die);
+	  }
+    }
+  } else {
+	alert('***ERROR***: invalid die pool input; die pool input cannot be empty.');
   }
 }
 
 // Clears the die stats portion.
 // This function is used with the "Clear Die Results" button.
 function clearDieStats() {
-	document.getElementById('die_stats').textContent = '';
-	lowestDieResult = 9999;
-	highestDieResult = -9999;
-	dieSum = 0;
+  document.getElementById('die_stats').textContent = '';
+  lowestDieResult = 9999;
+  highestDieResult = INITIAL_HIGHEST_DIE_VALUE;
+  dieSum = 0;
   document.getElementById('clear_printed_results').disabled = true;
 }
 
@@ -140,15 +161,22 @@ function clearPrintedDieResults() {
 // Rolls all the die in the die pool and displays the results.
 function rollDiePoolAndDisplayResults() {
   const printedDieResults = document.getElementById('printed_die_results');
+  var printedDieResultsText = printedDieResults.textContent;
+  if (printedDieResultsText.length > 0) {
+	printedDieResultsText += GROUP_ROLL_SPLIT;
+  }
+  var newPrintedResults = '';
   for (const die of diePool) {
     const min = die[0];
     const max = die[1];
     const dieResult = getRandomInt(min, max);
-    const newDieResult = document.createElement('div');
-    newDieResult.textContent = '(' + min + ', ' + max + ') = ' + dieResult;
-    printedDieResults.appendChild(newDieResult);
     updateDieStats(dieResult);
+	if (newPrintedResults.length > 0) {
+		newPrintedResults += INDIVIDUAL_ROLL_SPLIT;
+	}
+	newPrintedResults += dieResult;
   }
+  printedDieResults.textContent = (printedDieResultsText + newPrintedResults);
 }
 
 // Adds functions to the buttons.
